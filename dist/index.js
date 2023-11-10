@@ -1,5 +1,6 @@
 import express from 'express';
-import { generateToken } from './middleware/auth.js';
+import { generateToken, authenticateToken } from './middleware/auth.js';
+import { justify } from './justifyText.js';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 dotenv.config();
@@ -15,7 +16,15 @@ app.post('/api/token', (req, res) => {
     const token = generateToken(email);
     res.json({ token });
 });
-// app listening
+// route to justify text
+app.post('/api/justify', authenticateToken, (req, res) => {
+    const { text } = req.body;
+    if (typeof text !== 'string' || !text.trim()) {
+        return res.status(400).json({ error: 'Text is required in the request body.' });
+    }
+    const justifiedText = justify(text);
+    res.send(justifiedText);
+});
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
