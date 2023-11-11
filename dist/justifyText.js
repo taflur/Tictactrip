@@ -24,7 +24,7 @@ function justifyLine(line) {
         currentList.push(word);
         numOfLetters += word.length;
     }
-    const lastLine = currentList.join(' ');
+    const lastLine = currentList.join(' ').padEnd(LINE_LENGTH);
     result.push(lastLine);
     return result.join('\n'); // Join the lines into a single paragraph
 }
