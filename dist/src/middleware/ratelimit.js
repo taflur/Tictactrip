@@ -1,4 +1,4 @@
-const WORD_LIMIT_PER_DAY = 800;
+const WORD_LIMIT_PER_DAY = 80000;
 const tokenWordCounts = [];
 export const wordLimiter = (token, text) => (req, res, next) => {
     const existingTokenCount = tokenWordCounts.find(item => item.token === token);

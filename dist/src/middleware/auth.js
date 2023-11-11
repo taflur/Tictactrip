@@ -12,13 +12,11 @@ export function authenticateToken(req, res, next) {
     }
     jwt.verify(token, secretKey, (err, user) => {
         if (err) {
-            if (err) {
-                if (err.name === 'TokenExpiredError') {
-                    return res.status(401).json({ error: 'Token has expired' });
-                }
-                else {
-                    return res.status(403).json({ error: 'Invalid token' });
-                }
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).json({ error: 'Token has expired' });
+            }
+            else {
+                return res.status(403).json({ error: 'Invalid token' });
             }
         }
         req.body.email = user.email;

@@ -1,4 +1,4 @@
-const LINE_LENGTH = 80;
+const LINE_LENGTH = 80000;
 export function justify(text) {
     const lines = text.split('\n');
     const justifiedLines = lines.map(line => justifyLine(line));
