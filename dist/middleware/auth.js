@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 dotenv.config();
 const secretKey = process.env.SECRET_KEY || '';
 export function generateToken(email) {
-    return jwt.sign({ email }, secretKey, { expiresIn: '2h' });
+    return jwt.sign({ email }, secretKey, { expiresIn: '1d' });
 }
 export function authenticateToken(req, res, next) {
     const token = req.header('Authorization');

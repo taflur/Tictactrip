@@ -1,6 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import { generateToken, authenticateToken } from './middleware/auth.js';
 import { justify } from './justifyText.js';
+import { wordLimiter } from "./middleware/ratelimit.js";
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 
@@ -26,14 +27,20 @@ app.post('/api/token', (req: Request, res: Response) => {
 // route to justify text
 app.post('/api/justify',authenticateToken, (req: Request, res: Response) => {
     const { text } = req.body;
+    const token = req.header('Authorization');
 
     if (typeof text !== 'string' || !text.trim()) {
         return res.status(400).json({ error: 'Text is required in the request body.' });
     }
 
-    const justifiedText = justify(text);
+    const wordLimiterMiddleware = wordLimiter(token, text);
 
-    res.send(justifiedText);
+    wordLimiterMiddleware(req, res, () => {
+        const justifiedText = justify(text);
+
+        res.setHeader('Content-Type', 'text/plain');
+        res.send(justifiedText);
+    });
 
 });
 
