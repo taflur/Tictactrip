@@ -1,4 +1,4 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import { generateToken, authenticateToken } from './middleware/auth.js';
 import { justify } from './justifyText.js';
 import { wordLimiter } from "./middleware/ratelimit.js";
@@ -6,16 +6,11 @@ import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import swaggerUi from "swagger-ui-express";
 import swaggerOutput from "../swagger_output.json" assert { type: "json" };
-
 dotenv.config();
-
 const app = express();
 const port = process.env.PORT || 3000;
-
 app.use(bodyParser.json());
-
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
-
 /**
  * @openapi
  * /api/token:
@@ -44,19 +39,15 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
  *       500:
  *         description: Server Error
  */
-
 // route to obtain token
-app.post('/api/token', (req: Request, res: Response) => {
+app.post('/api/token', (req, res) => {
     const { email } = req.body;
-
     if (!email) {
         return res.status(400).json({ error: 'Email is required' });
     }
-
     const token = generateToken(email);
     res.json({ token });
 });
-
 /**
  * @openapi
  * /api/justify:
@@ -95,28 +86,21 @@ app.post('/api/token', (req: Request, res: Response) => {
  *       500:
  *         description: Server Error
  */
-
 // route to justify text
-app.post('/api/justify',authenticateToken , (req: Request, res: Response) => {
+app.post('/api/justify', authenticateToken, (req, res) => {
     const { text } = req.body;
     const token = req.header('Authorization');
-
     if (typeof text !== 'string' || !text.trim()) {
         return res.status(400).json({ error: 'Text is required in the request body.' });
     }
-
     const wordLimiterMiddleware = wordLimiter(token, text);
-
     wordLimiterMiddleware(req, res, () => {
         const justifiedText = justify(text);
-
         res.setHeader('Content-Type', 'text/plain');
         res.send(justifiedText);
     });
-
 });
-
-
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+//# sourceMappingURL=index.js.map

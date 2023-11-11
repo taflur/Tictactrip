@@ -29,7 +29,6 @@ export const wordLimiter = (token: string, text: string) => (
         tokenWordCounts.push({ token, wordCount: totalWordCount });
     }
 
-
     next();
 }
 
