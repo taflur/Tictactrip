@@ -1,6 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import fs from 'fs';
-
 // Define your API documentation options
 const options = {
     definition: {
@@ -34,12 +33,10 @@ const options = {
     // Specify the API files containing JSDoc comments
     apis: ['./src/index.ts'],
 };
-
 // Generate the OpenAPI specification
 const swaggerSpec = swaggerJsdoc(options);
-
 // Write the specification to a file
 const outputFile = './swagger_output.json';
 fs.writeFileSync(outputFile, JSON.stringify(swaggerSpec, null, 2));
-
 console.log(`Swagger specification generated and saved to ${outputFile}`);
+//# sourceMappingURL=swagger.js.map
