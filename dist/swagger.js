@@ -1,6 +1,5 @@
 import swaggerJsdoc from 'swagger-jsdoc';
 import fs from 'fs';
-// Define your API documentation options
 const options = {
     definition: {
         openapi: '3.0.0',
@@ -11,7 +10,11 @@ const options = {
         },
         servers: [
             {
-                url: 'http://localhost:4001',
+                url: 'http://13.50.235.131:80',
+                description: '',
+            },
+            {
+                url: 'http://localhost:3000',
                 description: '',
             },
         ],
@@ -30,7 +33,6 @@ const options = {
             },
         ],
     },
-    // Specify the API files containing JSDoc comments
     apis: ['./src/index.ts'],
 };
 // Generate the OpenAPI specification

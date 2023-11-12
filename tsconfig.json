@@ -15,7 +15,7 @@
     "esm": true
   },
   "include": [
-    "src/swagger_output.json",
+    "swagger_output.json",
     "src/**/*"
   ]
 }
