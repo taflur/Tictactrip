@@ -41,7 +41,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOutput));
  *       201:
  *         description: Success
  *       400:
- *         description: Email is required
+ *         description: Email is required or Invalid email format
  *       404:
  *         description: Not Found
  *       500:
@@ -56,8 +56,13 @@ app.post('/api/token', (req: Request, res: Response) => {
         return res.status(400).json({ error: 'Email is required' });
     }
 
-    const token = generateToken(email);
-    res.json({ token });
+    const tokenOrError = generateToken(email);
+
+    if (typeof tokenOrError === 'string') {
+        res.status(200).json({ token: tokenOrError });
+    } else {
+        res.status(400).json({ error: 'Invalid email format' });
+    }
 });
 
 /**

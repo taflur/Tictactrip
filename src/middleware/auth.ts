@@ -6,8 +6,15 @@ dotenv.config();
 
 const secretKey = process.env.SECRET_KEY || '';
 
-export function generateToken(email: string): string {
-    return jwt.sign({ email }, secretKey, { expiresIn: '1d' });
+export function generateToken(email: string): string | { error: string } {
+    // email validation pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailPattern.test(email)) {
+        return { error: 'Invalid email format' };
+    }
+
+    return jwt.sign({email}, secretKey, {expiresIn: '1d'});
 }
 
 export function authenticateToken(req: express.Request, res: express.Response, next: express.NextFunction) {

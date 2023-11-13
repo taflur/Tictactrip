@@ -3,6 +3,11 @@ import jwt from 'jsonwebtoken';
 dotenv.config();
 const secretKey = process.env.SECRET_KEY || '';
 export function generateToken(email) {
+    // email validation pattern
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+        return { error: 'Invalid email format' };
+    }
     return jwt.sign({ email }, secretKey, { expiresIn: '1d' });
 }
 export function authenticateToken(req, res, next) {

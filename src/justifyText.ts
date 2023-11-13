@@ -3,7 +3,6 @@ const LINE_LENGTH = 80;
 export function justify(text: string): string {
     const lines = text.split('\n');
     const justifiedLines = lines.map(line => justifyLine(line));
-    console.log(justifiedLines.join('\n'));
     return justifiedLines.join('\n');
 }
 

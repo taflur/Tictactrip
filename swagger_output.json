@@ -59,7 +59,7 @@
             "description": "Success"
           },
           "400": {
-            "description": "Email is required"
+            "description": "Email is required or Invalid email format"
           },
           "404": {
             "description": "Not Found"
