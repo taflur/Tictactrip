@@ -59,7 +59,7 @@ app.post('/api/token', (req: Request, res: Response) => {
     const tokenOrError = generateToken(email);
 
     if (typeof tokenOrError === 'string') {
-        res.status(200).json({ token: tokenOrError });
+        res.status(201).json({ token: tokenOrError });
     } else {
         res.status(400).json({ error: 'Invalid email format' });
     }
@@ -119,7 +119,7 @@ app.post('/api/justify',authenticateToken , (req: Request, res: Response) => {
         const justifiedText = justify(text);
 
         res.setHeader('Content-Type', 'text/plain');
-        res.send(justifiedText);
+        res.status(201).send(justifiedText);
     });
 
 });
