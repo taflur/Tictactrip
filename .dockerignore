@@ -2,8 +2,7 @@ node_modules
 dist
 Dockerfile
 .dockerignore
-test
+__test___
 .gitignore
-gen
 .env
 README.md

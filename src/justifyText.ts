@@ -6,7 +6,7 @@ export function justify(text: string): string {
     return justifiedLines.join('\n');
 }
 
-function justifyLine(line: string): string {
+export function justifyLine(line: string): string {
     const words = line.split(' ');
     const result: string[] = [];
     let currentList: string[] = [];
@@ -33,6 +33,6 @@ function justifyLine(line: string): string {
     const lastLine = currentList.join(' ').padEnd(LINE_LENGTH);
     result.push(lastLine);
 
-    return result.join('\n'); // Join the lines into a single paragraph
+    return result.join('\n');
 
 }

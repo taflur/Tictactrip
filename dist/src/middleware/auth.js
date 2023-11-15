@@ -1,31 +1,43 @@
-import dotenv from 'dotenv';
-import jwt from 'jsonwebtoken';
-dotenv.config();
-const secretKey = process.env.SECRET_KEY || '';
-export function generateToken(email) {
-    // email validation pattern
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.authenticateToken = exports.generateToken = void 0;
+var dotenv_1 = __importDefault(require("dotenv"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+dotenv_1.default.config();
+var secretKey = process.env.SECRET_KEY || '';
+function generateToken(email) {
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailPattern.test(email)) {
         return { error: 'Invalid email format' };
     }
-    return jwt.sign({ email }, secretKey, { expiresIn: '1d' });
+    return jsonwebtoken_1.default.sign({ email: email }, secretKey, { expiresIn: '1d' });
 }
-export function authenticateToken(req, res, next) {
-    const token = req.header('Authorization');
+exports.generateToken = generateToken;
+function authenticateToken(req, res, next) {
+    var token = req.headers.authorization;
     if (!token) {
-        return res.status(401).json({ error: 'No Authorization header found in the request' });
+        res.status(401);
+        res.json({ error: 'No Authorization header found in the request' });
+        return res;
     }
-    jwt.verify(token, secretKey, (err, user) => {
+    jsonwebtoken_1.default.verify(token, secretKey, function (err, user) {
         if (err) {
             if (err.name === 'TokenExpiredError') {
-                return res.status(401).json({ error: 'Token has expired' });
+                res.status(401);
+                res.json({ error: 'Token has expired' });
+                return res;
             }
             else {
-                return res.status(403).json({ error: 'Invalid token' });
+                res.status(403);
+                res.json({ error: 'Invalid token' });
+                return res;
             }
         }
         req.body.email = user.email;
         next();
     });
 }
-//# sourceMappingURL=auth.js.map
+exports.authenticateToken = authenticateToken;

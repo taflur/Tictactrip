@@ -6,32 +6,36 @@ dotenv.config();
 
 const secretKey = process.env.SECRET_KEY || '';
 
-export function generateToken(email: string): string | { error: string } {
-    // email validation pattern
+export function generateToken(email: string): string | { error: string }  {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailPattern.test(email)) {
         return { error: 'Invalid email format' };
     }
-
-    return jwt.sign({email}, secretKey, {expiresIn: '1d'});
+    return jwt.sign({ email }, secretKey, { expiresIn: '1d' });
 }
 
 export function authenticateToken(req: express.Request, res: express.Response, next: express.NextFunction) {
-    const token = req.header('Authorization');
+    const token = req.headers.authorization;
 
     if (!token) {
-        return res.status(401).json({error: 'No Authorization header found in the request'});
+        res.status(401);
+        res.json({error: 'No Authorization header found in the request'});
+        return res;
     }
 
-    jwt.verify(token, secretKey, (err, user) => {
-            if (err) {
-                if (err.name === 'TokenExpiredError') {
-                    return res.status(401).json({error: 'Token has expired'});
-                } else {
-                    return res.status(403).json({error: 'Invalid token'});
-                }
+    jwt.verify(token as string, secretKey, (err, user) => {
+        if (err) {
+            if (err.name === 'TokenExpiredError') {
+                res.status(401);
+                res.json({error: 'Token has expired'});
+                return res;
+            } else {
+                res.status(403);
+                res.json({error: 'Invalid token'});
+                return res;
             }
+        }
 
         req.body.email = (user as { email: string }).email;
         next();
