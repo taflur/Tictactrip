@@ -19,7 +19,9 @@ export const wordLimiter = (token: string, text: string) => (
     const requestWordsCount = countWords(text);
     const totalWordCount = existingTokenCount ? existingTokenCount.wordCount + requestWordsCount : requestWordsCount;
     if (totalWordCount > WORD_LIMIT_PER_DAY) {
-        return res.status(402).send('Payment Required - Word Limit Exceeded');
+        res.status(402);
+        res.json({message: 'Payment Required - Word Limit Exceeded'});
+        return res;
     }
 
     const index = tokenWordCounts.findIndex(item => item.token === token);

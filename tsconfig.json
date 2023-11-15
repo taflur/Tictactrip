@@ -1,21 +1,14 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "target": "ES2020",
-    "sourceMap": true,
-    "outDir": "dist",
+    "target": "es5",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "strict": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "allowJs": true,
+    "typeRoots": ["./node_modules/@types/"]
   },
-  "ts-node":
-  {
-    "esm": true
-  },
-  "include": [
-    "swagger_output.json",
-    "src/**/*"
-  ]
+  "include": ["*/.ts", "*/.json"],
+  "files": ["src/index.ts"]
 }

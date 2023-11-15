@@ -34,13 +34,11 @@ const options = {
             },
         ],
     },
-    apis: ['./src/index.ts'],
+    apis: ['./src/app.ts'],
 };
 
-// Generate the OpenAPI specification
 const swaggerSpec = swaggerJsdoc(options);
 
-// Write the specification to a file
 const outputFile = './swagger_output.json';
 fs.writeFileSync(outputFile, JSON.stringify(swaggerSpec, null, 2));
 
