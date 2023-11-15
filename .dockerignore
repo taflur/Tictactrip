@@ -6,3 +6,4 @@ __test___
 .gitignore
 .env
 README.md
+coverage
