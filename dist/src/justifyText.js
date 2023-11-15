@@ -1,19 +1,24 @@
-const LINE_LENGTH = 80;
-export function justify(text) {
-    const lines = text.split('\n');
-    const justifiedLines = lines.map(line => justifyLine(line));
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.justifyLine = exports.justify = void 0;
+var LINE_LENGTH = 80;
+function justify(text) {
+    var lines = text.split('\n');
+    var justifiedLines = lines.map(function (line) { return justifyLine(line); });
     return justifiedLines.join('\n');
 }
+exports.justify = justify;
 function justifyLine(line) {
-    const words = line.split(' ');
-    const result = [];
-    let currentList = [];
-    let numOfLetters = 0;
-    for (const word of words) {
+    var words = line.split(' ');
+    var result = [];
+    var currentList = [];
+    var numOfLetters = 0;
+    for (var _i = 0, words_1 = words; _i < words_1.length; _i++) {
+        var word = words_1[_i];
         if (numOfLetters + word.length + currentList.length > LINE_LENGTH) {
-            const size = Math.max(1, currentList.length - 1);
-            for (let i = 0; i < LINE_LENGTH - numOfLetters; i++) {
-                const index = i % size;
+            var size = Math.max(1, currentList.length - 1);
+            for (var i = 0; i < LINE_LENGTH - numOfLetters; i++) {
+                var index = i % size;
                 currentList[index] += ' ';
             }
             result.push(currentList.join(''));
@@ -23,8 +28,8 @@ function justifyLine(line) {
         currentList.push(word);
         numOfLetters += word.length;
     }
-    const lastLine = currentList.join(' ').padEnd(LINE_LENGTH);
+    var lastLine = currentList.join(' ').padEnd(LINE_LENGTH);
     result.push(lastLine);
-    return result.join('\n'); // Join the lines into a single paragraph
+    return result.join('\n');
 }
-//# sourceMappingURL=justifyText.js.map
+exports.justifyLine = justifyLine;

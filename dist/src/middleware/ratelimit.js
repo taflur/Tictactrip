@@ -1,23 +1,28 @@
-const WORD_LIMIT_PER_DAY = 80000;
-const tokenWordCounts = [];
-export const wordLimiter = (token, text) => (req, res, next) => {
-    const existingTokenCount = tokenWordCounts.find(item => item.token === token);
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.wordLimiter = void 0;
+var WORD_LIMIT_PER_DAY = 80000;
+var tokenWordCounts = [];
+var wordLimiter = function (token, text) { return function (req, res, next) {
+    var existingTokenCount = tokenWordCounts.find(function (item) { return item.token === token; });
     // Check if the word limit for the day is exceeded
-    const requestWordsCount = countWords(text);
-    const totalWordCount = existingTokenCount ? existingTokenCount.wordCount + requestWordsCount : requestWordsCount;
+    var requestWordsCount = countWords(text);
+    var totalWordCount = existingTokenCount ? existingTokenCount.wordCount + requestWordsCount : requestWordsCount;
     if (totalWordCount > WORD_LIMIT_PER_DAY) {
-        return res.status(402).send('Payment Required - Word Limit Exceeded');
+        res.status(402);
+        res.json({ message: 'Payment Required - Word Limit Exceeded' });
+        return res;
     }
-    const index = tokenWordCounts.findIndex(item => item.token === token);
+    var index = tokenWordCounts.findIndex(function (item) { return item.token === token; });
     if (index !== -1) {
         tokenWordCounts[index].wordCount = totalWordCount;
     }
     else {
-        tokenWordCounts.push({ token, wordCount: totalWordCount });
+        tokenWordCounts.push({ token: token, wordCount: totalWordCount });
     }
     next();
-};
+}; };
+exports.wordLimiter = wordLimiter;
 function countWords(text) {
-    return text.split(/\s+/).filter(word => word !== '').length;
+    return text.split(/\s+/).filter(function (word) { return word !== ''; }).length;
 }
-//# sourceMappingURL=ratelimit.js.map
